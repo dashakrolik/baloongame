@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="style.css">
+    <title>Baloon game</title>
+  </head>
+  <body background="header.png">
+    <div class="counter">
+      0
+      </div>
+    <div class="balloon">
+        <div class="inflatable"></div>
+        <div class="string"></div>
+    </div>
+
+    <div class="scoreboard">
+  <div class="badge">
+    <span class="label">Your Score:</span>
+    <div class="counter">0</div>
+    <a href="#" class="replay">Replay</a>
+  </div>
+</div>
+
+    <div class="cursor">
+    </div>
+
+<div class="balloon">
+  <div class="inflatable"></div>
+  <div class="string"></div>
+</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+    var balloon = $(".balloon");
+    var counter = 0;
+
+    var colors = ["#96ceb4", "#ffeead", "#ffcc5c", "#ff6f69", "#d96459", "#622569", "#5b9aa0", "#feb236", "#ff7b25", "#17becf"]
+       for(var i=0; i<10; i++){
+         var balloon_color
+      var balloonCopy = balloon.clone();
+      balloonCopy.css({
+      left: i * 200
+    });
+      balloonCopy.appendTo("body");
+
+      inflatable = balloonCopy.find(".inflatable");
+      balloon_color = colors[Math.floor(Math.random() * colors.length)];
+
+      inflatable.css({
+        "background-color": balloon_color
+      });
+
+      string = balloonCopy.find(".string");
+
+      balloon_width = Math.max(20, Math.floor(Math.random() * 90) + 1);
+      balloon_height = 1.2 * balloon_width;
+
+      inflatable.css({
+        height: balloon_height,
+        width: balloon_width,
+        "border-radius": balloon_width + "px / " + balloon_height + "px"
+      });
+      string.css({"margin-left": (0.5*balloon_width), height: (0.5*balloon_height)});
+
+      balloonCopy.css({left: '50%', bottom: 0});
+
+      balloonCopy.click(function(){
+
+        $(this).remove();
+        counter = counter + 100-balloon_width;
+        $(".counter").html(counter);
+      });
+
+      var xdiff = Math.floor(Math.random() * 100);
+      balloonCopy.show();
+      balloonCopy.animate({bottom: '100%', left: xdiff + "%"}, (8000 - balloon_width*10));
+    };
+    window.setTimeout(function() {
+   $('.scoreboard').addClass('ready');
+   $('.replay').bind('click', function(e) {
+     e.preventDefault();
+     window.location.reload();
+   });
+ }, 8000);
+    balloon.remove();
+
+
+  function preloadPopSound(){
+   var audio = new Audio('balloon-pop.mp3');
+   audio.preload = "auto";
+   $(audio).on("loadeddata", start);  // jQuery checking
+   return audio;
+   }
+
+   var pop_sound = preloadPopSound();
+
+</script>
+
+
+
+  </body>
+</html>
